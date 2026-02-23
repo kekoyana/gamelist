@@ -93,8 +93,19 @@ header .author{
   background:#8b5cf6;
   border-radius:1rem;
   padding:.2rem .7rem;
-  margin-bottom:.8rem;
+  margin-bottom:.5rem;
   display:inline-block;
+}
+.card .rating{
+  font-size:1.1rem;
+  margin-bottom:.8rem;
+  letter-spacing:.15em;
+  color:#facc15;
+  text-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+.card .rating .empty{
+  color:#d1d5db;
+  text-shadow:none;
 }
 .card .btn{
   display:inline-block;
@@ -161,6 +172,11 @@ footer{
     padding:.1rem .5rem;
     margin-bottom:0;
   }
+  .card .rating{
+    font-size:.85rem;
+    margin-bottom:0;
+    letter-spacing:.1em;
+  }
   .card .btn{
     padding:.5rem 1rem;
     font-size:.8rem;
@@ -186,6 +202,7 @@ footer{
       <h2>サンファン</h2>
       <p class="desc">カードゲーム「サンファン」のブラウザ版。建物を建てて街を発展させよう！</p>
       <span class="model">Claude Opus 4.6</span>
+      <div class="rating">★★★★★</div>
     </div>
     <a class="btn" style="--c:#f5576c" href="https://kekoyana.github.io/sanjuan/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
@@ -196,6 +213,7 @@ footer{
       <h2>カード・ドラゴン</h2>
       <p class="desc">カードを使ってダンジョンを進んでいくゲーム。ドラゴンを倒せるか！？</p>
       <span class="model">Claude 3.5 Sonnet</span>
+      <div class="rating">★★★★<span class="empty">☆</span></div>
     </div>
     <a class="btn" style="--c:#764ba2" href="https://kekoyana.github.io/carddragon/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
@@ -206,6 +224,7 @@ footer{
       <h2>Evolife - 生命進化シミュレーション</h2>
       <p class="desc">生命の進化をシミュレーション。環境に適応する生物たちを観察しよう。</p>
       <span class="model">Claude 3.5 Sonnet</span>
+      <div class="rating">★★★<span class="empty">☆☆</span></div>
     </div>
     <a class="btn" style="--c:#43b89c" href="https://kekoyana.github.io/ai_game/evolife/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
@@ -216,6 +235,7 @@ footer{
       <h2>ローグライク</h2>
       <p class="desc">ローグライクダンジョン探索ゲーム。ランダム生成の迷宮に挑め！</p>
       <span class="model">Claude 3.5 Sonnet</span>
+      <div class="rating">★★★<span class="empty">☆☆</span></div>
     </div>
     <a class="btn" style="--c:#667eea" href="https://kekoyana.github.io/ai_game/roguelike/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
@@ -226,6 +246,7 @@ footer{
       <h2>学園祭シミュレーション</h2>
       <p class="desc">学園祭シミュレーションゲーム（お試し版）。最高の学園祭を目指そう！</p>
       <span class="model">Claude 3.5 Sonnet</span>
+      <div class="rating">★<span class="empty">☆☆☆☆</span></div>
     </div>
     <a class="btn" style="--c:#f093fb" href="https://kekoyana.github.io/ai_game/gakuensai/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
@@ -236,8 +257,20 @@ footer{
       <h2>しりとり</h2>
       <p class="desc">しりとり言葉遊びゲーム。語彙力を試してみよう！</p>
       <span class="model">Claude 3.5 Sonnet</span>
+      <div class="rating">★★<span class="empty">☆☆☆</span></div>
     </div>
     <a class="btn" style="--c:#ffa62b" href="https://kekoyana.github.io/ai_game/shiritori/" target="_blank" rel="noopener">遊ぶ</a>
+  </div>
+
+  <div class="card">
+    <span class="icon" style="--d:1.8s">🔮</span>
+    <div class="info">
+      <h2>MYSTICAL DEFENSE</h2>
+      <p class="desc">神秘的な魔法で拠点を守り抜け！戦略的な防衛ゲーム。</p>
+      <span class="model">Claude Opus 4.6</span>
+      <div class="rating">★★★<span class="empty">☆☆</span></div>
+    </div>
+    <a class="btn" style="--c:#6b21a8" href="https://kekoyana.github.io/mystical/" target="_blank" rel="noopener">遊ぶ</a>
   </div>
 
 </main>
