@@ -3,290 +3,1267 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ゲームポータル</title>
+<title>kekoyana ゲームライブラリ</title>
+<meta name="description" content="kekoyanaが制作したブラウザゲームコレクション。Steamライブラリ風の快適なUIですぐにプレイ。">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Segoe UI','Hiragino Sans',sans-serif;
-  min-height:100vh;
-  background:linear-gradient(135deg,#667eea 0%,#764ba2 25%,#f093fb 50%,#f5576c 75%,#ffd452 100%);
-  background-size:400% 400%;
-  animation:bgShift 15s ease infinite;
-  color:#333;
+/* ==========================================================================
+   STEAM LIBRARY DESIGN SYSTEM
+   ========================================================================== */
+:root {
+  --steam-bg-darkest: #0e141b;
+  --steam-bg-dark: #171a21;
+  --steam-bg-main: #1b2838;
+  --steam-bg-card: #16202d;
+  --steam-bg-hover: #213346;
+  --steam-bg-selected: #2a475e;
+  
+  --steam-border: rgba(255, 255, 255, 0.08);
+  --steam-border-focus: #66c0f4;
+  
+  --steam-blue-light: #66c0f4;
+  --steam-blue-mid: #417a9b;
+  
+  --steam-green-btn-start: #75b022;
+  --steam-green-btn-end: #588a1b;
+  --steam-green-btn-hover-start: #8ed629;
+  --steam-green-btn-hover-end: #6aa621;
+  
+  --steam-text-light: #c7d5e0;
+  --steam-text-dim: #8f98a0;
+  --steam-text-dark: #626366;
+  --steam-text-white: #ffffff;
+  
+  --steam-warning-bg: rgba(245, 158, 11, 0.12);
+  --steam-warning-border: rgba(245, 158, 11, 0.35);
+  --steam-warning-text: #fbbf24;
 }
-@keyframes bgShift{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
-header{
-  text-align:center;
-  padding:3rem 1rem 2rem;
+
+body {
+  font-family: "Motiva Sans", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--steam-bg-darkest);
+  color: var(--steam-text-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  font-size: 14px;
 }
-header h1{
-  font-size:2.8rem;
-  color:#fff;
-  text-shadow:2px 2px 8px rgba(0,0,0,.3);
-  margin-bottom:.5rem;
-  letter-spacing:.05em;
+
+/* ==========================================================================
+   STEAM CLIENT TOP BAR
+   ========================================================================== */
+.client-topbar {
+  background-color: var(--steam-bg-dark);
+  border-bottom: 1px solid var(--steam-border);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 50;
 }
-header p{
-  font-size:1.1rem;
-  color:rgba(255,255,255,.9);
-  text-shadow:1px 1px 4px rgba(0,0,0,.2);
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
-header .author{
-  margin-top:.6rem;
-  font-size:.9rem;
-  color:rgba(255,255,255,.75);
-  text-shadow:1px 1px 4px rgba(0,0,0,.2);
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:1.5rem;
-  max-width:1100px;
-  margin:0 auto;
-  padding:1rem 1.5rem 3rem;
+
+.topbar-logo {
+  font-size: 18px;
 }
-.card{
-  background:rgba(255,255,255,.92);
-  border-radius:1rem;
-  padding:2rem 1.5rem 1.5rem;
-  text-align:center;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  transition:transform .25s ease,box-shadow .25s ease;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+
+.topbar-title {
+  color: var(--steam-text-white);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.card:hover{
-  transform:translateY(-8px) scale(1.03);
-  box-shadow:0 16px 40px rgba(0,0,0,.2);
+
+.topbar-nav {
+  display: flex;
+  gap: 16px;
 }
-.card .icon{
-  font-size:3.2rem;
-  margin-bottom:.8rem;
-  display:inline-block;
-  animation:bounce 2s ease infinite;
-  animation-delay:var(--d,0s);
+
+.nav-tab-item {
+  color: var(--steam-text-white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
 }
-@keyframes bounce{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.card h2{
-  font-size:1.3rem;
-  margin-bottom:.5rem;
-  color:#4a3f8a;
+
+.library-count-badge {
+  font-size: 12px;
+  color: var(--steam-blue-light);
+  background: rgba(102, 192, 244, 0.12);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(102, 192, 244, 0.25);
 }
-.card .desc{
-  font-size:.95rem;
-  color:#666;
-  margin-bottom:1.2rem;
-  flex:1;
-  line-height:1.5;
+
+/* ==========================================================================
+   MAIN STEAM LIBRARY LAYOUT (SPLIT VIEW)
+   ========================================================================== */
+.library-layout {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 48px);
+  background-color: var(--steam-bg-main);
 }
-.card .model{
-  font-size:.75rem;
-  color:#fff;
-  background:#8b5cf6;
-  border-radius:1rem;
-  padding:.2rem .7rem;
-  margin-bottom:.5rem;
-  display:inline-block;
+
+/* --- LEFT SIDEBAR (GAME LIST) --- */
+.library-sidebar {
+  width: 290px;
+  background-color: var(--steam-bg-dark);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
-.card .rating{
-  font-size:1.1rem;
-  margin-bottom:.8rem;
-  letter-spacing:.15em;
-  color:#facc15;
-  text-shadow:0 1px 2px rgba(0,0,0,.15);
+
+.sidebar-search-box {
+  padding: 12px;
+  border-bottom: 1px solid var(--steam-border);
 }
-.card .rating .empty{
-  color:#d1d5db;
-  text-shadow:none;
+
+.sidebar-search-input {
+  width: 100%;
+  background-color: #212b35;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+  color: #fff;
+  padding: 7px 10px 7px 28px;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
 }
-.card .btn{
-  display:inline-block;
-  padding:.65rem 1.8rem;
-  border-radius:2rem;
-  color:#fff;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:.95rem;
-  background:var(--c,#667eea);
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
-  transition:filter .2s,transform .15s;
+
+.sidebar-search-input:focus {
+  border-color: var(--steam-blue-light);
+  background-color: #2a3847;
 }
-.card .btn:hover{
-  filter:brightness(1.15);
-  transform:scale(1.05);
+
+.search-wrapper {
+  position: relative;
 }
-footer{
-  text-align:center;
-  padding:2rem 1rem;
-  color:rgba(255,255,255,.8);
-  font-size:.85rem;
+
+.search-icon-svg {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--steam-text-dim);
+  font-size: 11px;
+  pointer-events: none;
 }
-/* --- スマホ用コンパクトレイアウト --- */
-@media(max-width:600px){
-  header{padding:2rem 1rem 1.2rem}
-  header h1{font-size:1.8rem}
-  header p{font-size:.9rem}
-  .grid{
-    grid-template-columns:1fr;
-    gap:.6rem;
-    padding:.8rem;
+
+.sidebar-category-filter {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--steam-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sidebar-category-filter::-webkit-scrollbar { display: none; }
+
+.cat-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--steam-text-dim);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.cat-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.cat-pill.active {
+  background: var(--steam-blue-light);
+  color: #000;
+  font-weight: 700;
+}
+
+.sidebar-gamelist {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: var(--steam-text-light);
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.sidebar-item.active {
+  background: linear-gradient(90deg, #2a475e 0%, rgba(42, 71, 94, 0.3) 100%);
+  color: #fff;
+  border-left: 3px solid var(--steam-blue-light);
+  padding-left: 11px;
+}
+
+.sidebar-item-icon {
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-item-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.sidebar-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-item-cat {
+  font-size: 10px;
+  color: var(--steam-text-dark);
+}
+
+.sidebar-item.active .sidebar-item-cat {
+  color: var(--steam-blue-light);
+}
+
+/* --- RIGHT MAIN DETAIL VIEW --- */
+.library-main {
+  flex: 1;
+  background-color: var(--steam-bg-main);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HERO HEADER (SELECTED GAME BANNER) */
+.hero-banner {
+  position: relative;
+  min-height: 420px;
+  background-color: #0b0f15;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  transition: background-image 0.3s ease;
+}
+
+.hero-banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(27, 40, 56, 1) 0%,
+    rgba(27, 40, 56, 0.88) 35%,
+    rgba(14, 20, 27, 0.45) 100%
+  );
+}
+
+.hero-banner-content {
+  position: relative;
+  z-index: 5;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-tags-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hero-tag {
+  background: rgba(0, 0, 0, 0.65);
+  color: var(--steam-blue-light);
+  border: 1px solid rgba(102, 192, 244, 0.3);
+  padding: 3px 8px;
+  font-size: 11px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.hero-title {
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-tagline {
+  font-size: 14px;
+  color: var(--steam-text-light);
+  max-width: 680px;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* BIG GREEN PLAY BUTTON & META BAR */
+.hero-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-steam-play {
+  background: linear-gradient(to right, var(--steam-green-btn-start) 5%, var(--steam-green-btn-end) 95%);
+  color: #ffffff;
+  padding: 12px 42px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  border-radius: 3px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease;
+}
+
+.btn-steam-play:hover {
+  background: linear-gradient(to right, var(--steam-green-btn-hover-start) 5%, var(--steam-green-btn-hover-end) 95%);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(117, 176, 34, 0.4);
+}
+
+.hero-meta-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--steam-text-dark);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 13px;
+  color: var(--steam-text-light);
+  font-weight: 600;
+}
+
+/* GAME DETAILS / ABOUT SECTION */
+.library-content-body {
+  padding: 30px 40px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.detail-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--steam-text-dim);
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--steam-border);
+  padding-bottom: 6px;
+}
+
+/* Notice Box for Download / Bandwidth */
+.notice-box {
+  background: var(--steam-warning-bg);
+  border: 1px solid var(--steam-warning-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.notice-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.notice-text {
+  font-size: 12px;
+  color: var(--steam-warning-text);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.game-about-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--steam-border);
+  border-radius: 3px;
+  padding: 20px;
+  line-height: 1.6;
+  color: #c7d5e0;
+}
+
+.game-about-box p {
+  margin-bottom: 12px;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 3px;
+  display: flex;
+  gap: 10px;
+}
+
+.feature-bullet {
+  color: var(--steam-blue-light);
+  font-weight: 700;
+}
+
+.feature-text {
+  font-size: 12px;
+  color: var(--steam-text-light);
+  line-height: 1.45;
+}
+
+/* SCREENSHOTS GALLERY SECTION (STEAM-STYLE) */
+.screenshots-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.screenshot-thumb-card {
+  aspect-ratio: 16 / 9;
+  background-color: #0b0f15;
+  border: 1px solid var(--steam-border);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.screenshot-thumb-card:hover {
+  border-color: var(--steam-blue-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 10px rgba(102, 192, 244, 0.3);
+}
+
+.screenshot-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.screenshot-thumb-card:hover .screenshot-thumb-img {
+  transform: scale(1.05);
+}
+
+.screenshot-badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* ALL GAMES COLLECTION SHELF (BOTTOM GRID) */
+.shelf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.shelf-card {
+  background: var(--steam-bg-card);
+  border: 1px solid var(--steam-border);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.shelf-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--steam-blue-light);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.shelf-card.active {
+  border-color: var(--steam-blue-light);
+  box-shadow: 0 0 12px rgba(102, 192, 244, 0.35);
+}
+
+.shelf-media {
+  aspect-ratio: 16 / 9;
+  background-color: #0b0f15;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelf-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.shelf-card:hover .shelf-img {
+  transform: scale(1.06);
+}
+
+.shelf-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: linear-gradient(180deg, #16202d 0%, #0e141b 100%);
+}
+
+.shelf-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c7d5e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shelf-card:hover .shelf-title {
+  color: #fff;
+}
+
+.shelf-category {
+  font-size: 10px;
+  color: var(--steam-text-dim);
+}
+
+/* ==========================================================================
+   SCREENSHOT LIGHTBOX MODAL
+   ========================================================================== */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 1100px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--steam-border);
+}
+
+.lightbox-caption {
+  margin-top: 12px;
+  color: var(--steam-text-light);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 800px) {
+  .library-layout {
+    flex-direction: column;
   }
-  .card{
-    flex-direction:row;
-    padding:.8rem 1rem;
-    border-radius:.8rem;
-    text-align:left;
-    gap:.8rem;
+  .library-sidebar {
+    width: 100%;
+    max-height: 240px;
+    border-right: none;
+    border-bottom: 1px solid var(--steam-border);
   }
-  .card:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(0,0,0,.15);
+  .hero-banner-content {
+    padding: 20px;
   }
-  .card .icon{
-    font-size:2rem;
-    margin-bottom:0;
-    flex-shrink:0;
-    animation:none;
+  .hero-title {
+    font-size: 24px;
   }
-  .card .info{
-    flex:1;
-    min-width:0;
+  .library-content-body {
+    padding: 20px;
   }
-  .card h2{
-    font-size:1rem;
-    margin-bottom:.2rem;
-  }
-  .card .desc{
-    display:none;
-  }
-  .card .model{
-    font-size:.65rem;
-    padding:.1rem .5rem;
-    margin-bottom:0;
-  }
-  .card .rating{
-    font-size:.85rem;
-    margin-bottom:0;
-    letter-spacing:.1em;
-  }
-  .card .btn{
-    padding:.5rem 1rem;
-    font-size:.8rem;
-    flex-shrink:0;
-    align-self:center;
+  .screenshots-gallery-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🎮 ゲームポータル</h1>
-  <p>ブラウザで遊べるゲームコレクション — すぐにプレイ！</p>
-  <p class="author">Created by kekoyana</p>
+<!-- STEAM CLIENT TOP BAR -->
+<header class="client-topbar">
+  <div class="topbar-left">
+    <a href="#" class="topbar-brand" id="brandReset">
+      <span class="topbar-logo">🎮</span>
+      <span class="topbar-title">kekoyana Games</span>
+    </a>
+
+    <div class="topbar-nav">
+      <button class="nav-tab-item active" id="tabAll">ライブラリ</button>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <span class="library-count-badge">8 本のゲーム</span>
+  </div>
 </header>
 
-<main class="grid">
+<!-- MAIN LIBRARY SPLIT VIEW -->
+<div class="library-layout">
 
-  <div class="card">
-    <span class="icon" style="--d:0s">🏗️</span>
-    <div class="info">
-      <h2>サンファン</h2>
-      <p class="desc">カードゲーム「サンファン」のブラウザ版。建物を建てて街を発展させよう！</p>
-      <span class="model">Claude Opus 4.6</span>
-      <div class="rating">★★★★★</div>
+  <!-- LEFT SIDEBAR: SEARCH, FILTERS & GAME LIST -->
+  <aside class="library-sidebar">
+    <div class="sidebar-search-box">
+      <div class="search-wrapper">
+        <span class="search-icon-svg">🔍</span>
+        <input 
+          type="text" 
+          class="sidebar-search-input" 
+          id="searchInput" 
+          placeholder="ゲームを検索..." 
+          autocomplete="off"
+        >
+      </div>
     </div>
-    <a class="btn" style="--c:#f5576c" href="https://kekoyana.github.io/sanjuan/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
 
-  <div class="card">
-    <span class="icon" style="--d:.3s">🐉</span>
-    <div class="info">
-      <h2>カード・ドラゴン</h2>
-      <p class="desc">カードを使ってダンジョンを進んでいくゲーム。ドラゴンを倒せるか！？</p>
-      <span class="model">Claude 3.5 Sonnet</span>
-      <div class="rating">★★★★<span class="empty">☆</span></div>
+    <!-- Category Pills -->
+    <div class="sidebar-category-filter" id="categoryPills">
+      <button class="cat-pill active" data-cat="all">すべて (8)</button>
+      <button class="cat-pill" data-cat="strategy">戦略・カード (4)</button>
+      <button class="cat-pill" data-cat="action">3D脱出 (1)</button>
+      <button class="cat-pill" data-cat="simulation">シム (2)</button>
+      <button class="cat-pill" data-cat="quiz">クイズ (1)</button>
     </div>
-    <a class="btn" style="--c:#764ba2" href="https://kekoyana.github.io/carddragon/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
 
-  <div class="card">
-    <span class="icon" style="--d:.6s">🧬</span>
-    <div class="info">
-      <h2>Evolife - 生命進化シミュレーション</h2>
-      <p class="desc">生命の進化をシミュレーション。環境に適応する生物たちを観察しよう。</p>
-      <span class="model">Claude 3.5 Sonnet</span>
-      <div class="rating">★★★<span class="empty">☆☆</span></div>
+    <!-- Game List Items -->
+    <div class="sidebar-gamelist" id="sidebarGamelist">
+      <!-- Items dynamically injected -->
     </div>
-    <a class="btn" style="--c:#43b89c" href="https://kekoyana.github.io/ai_game/evolife/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
+  </aside>
 
-  <div class="card">
-    <span class="icon" style="--d:.9s">⚔️</span>
-    <div class="info">
-      <h2>ローグライク</h2>
-      <p class="desc">ローグライクダンジョン探索ゲーム。ランダム生成の迷宮に挑め！</p>
-      <span class="model">Claude 3.5 Sonnet</span>
-      <div class="rating">★★★<span class="empty">☆☆</span></div>
+  <!-- RIGHT MAIN DETAIL AREA (SELECTED GAME) -->
+  <main class="library-main">
+
+    <!-- HERO BANNER (OGP优先、なければキャプチャ) -->
+    <section class="hero-banner" id="heroBanner">
+      <div class="hero-banner-gradient"></div>
+      <div class="hero-banner-content">
+        <div class="hero-tags-row" id="heroTags">
+          <!-- Tags injected -->
+        </div>
+        <h1 class="hero-title" id="heroTitle">Cyber Ward</h1>
+        <p class="hero-tagline" id="heroTagline">
+          異常を見つけて引き返せ。サイバー空間を探索し第8ファイアウォールを目指す3Dサイバー脱出ゲーム。
+        </p>
+
+        <!-- Big Play Button & Stats Bar -->
+        <div class="hero-action-bar">
+          <a class="btn-steam-play" id="heroPlayBtn" href="https://cyber-ward.pages.dev/" target="_blank" rel="noopener">
+            <span>▶</span> プレイ
+          </a>
+
+          <div class="hero-meta-stats">
+            <div class="stat-item">
+              <span class="stat-label">想定プレイ時間</span>
+              <span class="stat-value" id="heroPlaytime">15〜25分</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">プラットフォーム</span>
+              <span class="stat-value" id="heroPlatform">ブラウザ（PC / スマホ）</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">開発元</span>
+              <span class="stat-value">kekoyana</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILS, SCREENSHOTS & SHELF -->
+    <div class="library-content-body">
+
+      <!-- Notice Container (Rendered dynamically if game has notice) -->
+      <div id="noticeContainer"></div>
+
+      <!-- About Section -->
+      <div>
+        <div class="detail-section-title">ゲームについて</div>
+        <div class="game-about-box">
+          <p id="heroFullDesc">
+            サイバー空間の深層ネットワークに迷い込んだプレイヤー。エリア内の微細なバグを見極め、引き返すか進むかを判断して第8ファイアウォールの突破を目指します。
+          </p>
+          <div class="features-list" id="heroFeaturesList">
+            <!-- Features injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREENSHOTS GALLERY SECTION -->
+      <div>
+        <div class="detail-section-title">スクリーンショット</div>
+        <div class="screenshots-gallery-grid" id="screenshotsGallery">
+          <!-- Screenshots injected -->
+        </div>
+      </div>
+
+      <!-- All Games Collection Shelf -->
+      <div>
+        <div class="detail-section-title">すべてのコレクション (8)</div>
+        <div class="shelf-grid" id="shelfGrid">
+          <!-- Shelf Cards injected -->
+        </div>
+      </div>
+
     </div>
-    <a class="btn" style="--c:#667eea" href="https://kekoyana.github.io/ai_game/roguelike/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
 
-  <div class="card">
-    <span class="icon" style="--d:1.2s">🎪</span>
-    <div class="info">
-      <h2>学園祭シミュレーション</h2>
-      <p class="desc">学園祭シミュレーションゲーム（お試し版）。最高の学園祭を目指そう！</p>
-      <span class="model">Claude 3.5 Sonnet</span>
-      <div class="rating">★<span class="empty">☆☆☆☆</span></div>
+  </main>
+
+</div>
+
+<!-- SCREENSHOT LIGHTBOX MODAL -->
+<div class="lightbox-overlay" id="lightboxModal" role="dialog" aria-modal="true">
+  <div class="lightbox-content">
+    <button class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="閉じる">✕</button>
+    <img src="" alt="" class="lightbox-img" id="lightboxImg">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     APPLICATION SCRIPT
+     ========================================================================== -->
+<script>
+// --- GAME DATABASE (OGP優先 + 日本語/プレイ中スクリーンショット + 注意事項) ---
+const GAMES = [
+  {
+    id: "cyber-ward",
+    title: "Cyber Ward",
+    category: "action",
+    categoryLabel: "3D・脱出",
+    tags: ["3D探索", "異変脱出", "Godot 3D", "サイバーパンク"],
+    playtime: "15〜25分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://cyber-ward.pages.dev/",
+    coverImg: "https://cyber-ward.pages.dev/ogp.jpg", // OGP優先
+    notice: "初回起動時に約20MBのゲームデータダウンロード（通信量）が発生します（2回目以降はブラウザにキャッシュされます）。Wi-Fi環境等でのプレイを推奨します。",
+    screenshots: [
+      { src: "screenshots/cyber-ward.png", label: "タイトル・接続画面" },
+      { src: "screenshots/cyber-ward-play.png", label: "ゲームプレイ（3Dサイバー通路・異変探索）" }
+    ],
+    icon: "🛡️",
+    summary: "異常を見つけて引き返せ。サイバー空間を探索し第8ファイアウォールを目指す3Dサイバー脱出ゲーム。",
+    desc: "サイバー空間の深層ネットワークに迷い込んだプレイヤー。エリア内の微細なバグ（異変）を見極め、引き返すか進むかを判断して第8ファイアウォールの突破を目指します。",
+    features: [
+      "微細な画面や音の変化を見逃さない観察眼が鍵",
+      "異常がなければ進み、異常があれば引き返す直感ルール",
+      "Godot Engineによる美麗な3Dサイバービジュアル"
+    ]
+  },
+  {
+    id: "three-kingdoms",
+    title: "三国志ー覇への道",
+    category: "strategy",
+    categoryLabel: "戦略・カード",
+    tags: ["ダイスRPG", "ローグライト", "三国志", "ターン制戦略"],
+    playtime: "15〜30分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.itch.io/three-kingdoms-path-to-glory",
+    coverImg: "https://img.itch.zone/aW1nLzI2Mjg2NzMwLmpwZw==/original/VgEXir.jpg", // OGP優先
+    screenshots: [
+      { src: "screenshots/three-kingdoms.png", label: "タイトル・山河ビジュアル" },
+      { src: "screenshots/three-kingdoms-hero-ja.png", label: "武将選択（劉備・出陣スキル/日本語）" },
+      { src: "screenshots/three-kingdoms-battle-ja.png", label: "第1章 黄巾の乱（マップ探索/日本語）" }
+    ],
+    icon: "⚔️",
+    summary: "ダイスを振り、攻撃・防御・策略スロットに配置して戦う三国志ローグライトRPG。",
+    desc: "劉備・関羽・諸葛亮など蜀の英傑たちを率い、ダイスロールの出目を攻撃・防御・策略スロットに配分して戦う戦略ダイスバトル。宝玉を集めて永続強化し全5章を踏破せよ！",
+    features: [
+      "6人の武将それぞれ異なるダイス構成と固有スキル",
+      "敵の次の行動を読んでスロットにダイスを割り振る戦術性",
+      "宝玉を集めて繰り返し強化できるローグライト進行"
+    ]
+  },
+  {
+    id: "academy-tempest",
+    title: "Academy Tempest 〜学園の風〜",
+    category: "simulation",
+    categoryLabel: "シミュレーション",
+    tags: ["学園シム", "説得バトル", "マルチエンディング", "日英対応"],
+    playtime: "20〜30分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.itch.io/academy-tempest",
+    coverImg: "https://img.itch.zone/aW1nLzI2NTQ1OTMwLnBuZw==/original/GgRcRJ.png", // OGP優先
+    screenshots: [
+      { src: "screenshots/academy-tempest.png", label: "タイトル・校舎ビジュアル" },
+      { src: "screenshots/academy-tempest-play2.png", label: "説得バトル（態度・話題選択）" },
+      { src: "screenshots/academy-tempest-play1.png", label: "生徒情報・校内探索" }
+    ],
+    icon: "🏫",
+    summary: "45人の生徒と語り合う学園生活 × 説得バトルシミュレーション。",
+    desc: "学園祭のあり方を巡る3派閥の対立。30日間の学園探索と生徒たちとの心理的「説得バトル」を通じてクラス・部活の組織票を勝ち取り、自らの派閥を勝利へ導け！",
+    features: [
+      "45人の個性的な生徒それぞれ異なる性格と好み",
+      "態度・話題・立場を選ぶターン制の説得バトル",
+      "組織票を味方につけて学園祭の方針を決定する30日間"
+    ]
+  },
+  {
+    id: "sanjuan",
+    title: "サンファン (San Juan)",
+    category: "strategy",
+    categoryLabel: "戦略・カード",
+    tags: ["ボードゲーム", "カード戦略", "都市建設", "名作移植"],
+    playtime: "15〜20分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.github.io/sanjuan/",
+    coverImg: "screenshots/sanjuan.png", // OGPなしのためキャプチャ
+    screenshots: [
+      { src: "screenshots/sanjuan.png", label: "タイトル・古地図画面" },
+      { src: "screenshots/sanjuan-play.png", label: "ゲームプレイ（役職選択・手札・建築ボード）" }
+    ],
+    icon: "🏗️",
+    summary: "名作ボードゲーム「サンファン」のブラウザ完全移植版。",
+    desc: "名作ボードゲーム「サンファン」のブラウザ完全再現版。インディゴ染料工場やギルドホールなどの建物を戦略的に建設して街を発展させよう！",
+    features: [
+      "建築士・監督・商人などの役割を選びながら進める奥深い戦略",
+      "多彩な建物効果を組み合わせたコンボ構築",
+      "1人プレイでじっくり思考できる快適な操作感"
+    ]
+  },
+  {
+    id: "royal-rummy",
+    title: "Royal Rummy",
+    category: "strategy",
+    categoryLabel: "戦略・カード",
+    tags: ["ジン・ラミー", "トランプ", "中世王宮", "頭脳戦"],
+    playtime: "10〜15分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.github.io/output_games/royal-rummy/",
+    coverImg: "https://kekoyana.github.io/output_games/royal-rummy/ogp.jpg", // OGP優先
+    screenshots: [
+      { src: "screenshots/royal-rummy.png", label: "タイトル画面" },
+      { src: "screenshots/royal-rummy-play.png", label: "ゲームプレイ（カード対戦テーブル・手札・アタック）" }
+    ],
+    icon: "🃏",
+    summary: "中世王宮トーナメント。4人の挑戦者とジン・ラミーで勝負！",
+    desc: "格式高き中世王宮で開催されるカードトーナメント。4人の個性的なAI対戦相手とジン・ラミーで頭脳勝負を繰り広げ、王の認める真の勝者となれ。",
+    features: [
+      "本格的なジン・ラミーのルールを忠実に再現",
+      "4人のAIキャラクターと勝ち抜き戦",
+      "中世王宮の重厚な雰囲気で楽しめるカードバトル"
+    ]
+  },
+  {
+    id: "10-min-civ",
+    title: "10 Min Civ - 10分文明戦略",
+    category: "strategy",
+    categoryLabel: "戦略・カード",
+    tags: ["4X戦略", "文明発展", "超高速", "ターン制"],
+    playtime: "10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.github.io/output_games/civrush/",
+    coverImg: "screenshots/civrush.png", // OGPなしのためキャプチャ
+    screenshots: [
+      { src: "screenshots/civrush.png", label: "難易度選択・パノラマ画面" },
+      { src: "screenshots/civrush-play.png", label: "ゲームプレイ（文明発展・ヘックスマップ）" }
+    ],
+    icon: "🏛️",
+    summary: "10分で決着！超高速の文明発展シミュレーション。",
+    desc: "領土拡張、軍事配備、技術ツリーの解放を10分の濃密な時間で体験。電光石火の判断で自国の文明を世界の覇者に導け！",
+    features: [
+      "領土拡大、技術研究、防衛軍の配備が10分で完結",
+      "手軽ながら奥深い選択肢とリソースマネジメント",
+      "いつでもサクッと遊べるハイテンポな4X"
+    ]
+  },
+  {
+    id: "evolife",
+    title: "Evolife - 生命進化シミュレーション",
+    category: "simulation",
+    categoryLabel: "シミュレーション",
+    tags: ["生態系シム", "進化実験", "生命観察", "サンドボックス"],
+    playtime: "自由 / 観察",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoyana.github.io/ai_game/evolife/",
+    coverImg: "screenshots/evolife.png", // OGPなしのためキャプチャ
+    screenshots: [
+      { src: "screenshots/evolife.png", label: "シミュレーション設定画面" },
+      { src: "screenshots/evolife-play.png", label: "ゲームプレイ（環境配置・生態系シミュレーショングリッド）" }
+    ],
+    icon: "🧬",
+    summary: "環境適応と突然変異の生命進化シミュレータ。",
+    desc: "独自に進化した生物たちが捕食・繁殖・突然変異を繰り返す生態系シミュレータ。環境パラメータを操作し、独自の生命体が誕生する過程を観察しよう。",
+    features: [
+      "自律的に行動し適応していくデジタル生物たち",
+      "食料や環境を自由に変更して観察できる実験機能",
+      "世代交代による遺伝と進化のプロセスを可視化"
+    ]
+  },
+  {
+    id: "keko-quiz",
+    title: "けこやなからの挑戦 (Keko Quiz)",
+    category: "quiz",
+    categoryLabel: "クイズ",
+    tags: ["クイズ", "早押し", "ハイスコア", "高難度"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "https://kekoquiz.kekoyana.workers.dev/",
+    coverImg: "https://kekoquiz.kekoyana.workers.dev/ogp.png", // OGP優先
+    screenshots: [
+      { src: "screenshots/kekoquiz.png", label: "タイトル・天空の城画面" },
+      { src: "screenshots/kekoquiz-play.png", label: "ゲームプレイ（問題出題・4択回答・タイマー画面）" }
+    ],
+    icon: "💡",
+    summary: "早答え・高難度！知識と直感を試す本格クイズゲーム。",
+    desc: "幅広い分野から出題される難問に電光石火のスピードで回答！スピードボーナスと正確性を突き詰めて最高ランクのスコアを目指すクイズバトル。",
+    features: [
+      "手応え抜群の本格クイズ問題",
+      "回答速度がスコアに直結する早押しスリル",
+      "ハイスコアを目指して何度でも挑戦可能"
+    ]
+  }
+];
+
+// --- STATE ---
+let selectedGameId = GAMES[0].id;
+let currentCategory = "all";
+let searchQuery = "";
+
+// --- DOM ELEMENTS ---
+const sidebarGamelist = document.getElementById("sidebarGamelist");
+const categoryPills = document.getElementById("categoryPills");
+const searchInput = document.getElementById("searchInput");
+const shelfGrid = document.getElementById("shelfGrid");
+const screenshotsGallery = document.getElementById("screenshotsGallery");
+const noticeContainer = document.getElementById("noticeContainer");
+
+// Hero Elements
+const heroBanner = document.getElementById("heroBanner");
+const heroTags = document.getElementById("heroTags");
+const heroTitle = document.getElementById("heroTitle");
+const heroTagline = document.getElementById("heroTagline");
+const heroPlayBtn = document.getElementById("heroPlayBtn");
+const heroPlaytime = document.getElementById("heroPlaytime");
+const heroPlatform = document.getElementById("heroPlatform");
+const heroFullDesc = document.getElementById("heroFullDesc");
+const heroFeaturesList = document.getElementById("heroFeaturesList");
+
+// Lightbox Elements
+const lightboxModal = document.getElementById("lightboxModal");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxCaption = document.getElementById("lightboxCaption");
+const lightboxCloseBtn = document.getElementById("lightboxCloseBtn");
+
+// --- RENDER FUNCTIONS ---
+function selectGame(gameId) {
+  selectedGameId = gameId;
+  const game = GAMES.find(g => g.id === gameId);
+  if (!game) return;
+
+  // Update Hero Banner (Cover Art)
+  heroTitle.textContent = game.title;
+  heroTagline.textContent = game.summary;
+  heroPlayBtn.href = game.url;
+  heroPlaytime.textContent = game.playtime;
+  heroPlatform.textContent = game.platform;
+  heroFullDesc.textContent = game.desc;
+  heroBanner.style.backgroundImage = `url(${game.coverImg})`;
+
+  // Notice Bar
+  if (game.notice) {
+    noticeContainer.innerHTML = `
+      <div class="notice-box">
+        <span class="notice-icon">⚠️</span>
+        <span class="notice-text">${game.notice}</span>
+      </div>
+    `;
+  } else {
+    noticeContainer.innerHTML = '';
+  }
+
+  // Tags
+  heroTags.innerHTML = game.tags.map(t => 
+    `<span class="hero-tag">${t}</span>`
+  ).join('');
+
+  // Features List
+  heroFeaturesList.innerHTML = game.features.map(f => `
+    <div class="feature-card">
+      <span class="feature-bullet">✔</span>
+      <span class="feature-text">${f}</span>
     </div>
-    <a class="btn" style="--c:#f093fb" href="https://kekoyana.github.io/ai_game/gakuensai/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
+  `).join('');
 
-  <div class="card">
-    <span class="icon" style="--d:1.5s">💬</span>
-    <div class="info">
-      <h2>しりとり</h2>
-      <p class="desc">しりとり言葉遊びゲーム。語彙力を試してみよう！</p>
-      <span class="model">Claude 3.5 Sonnet</span>
-      <div class="rating">★★<span class="empty">☆☆☆</span></div>
+  // Screenshots Gallery
+  screenshotsGallery.innerHTML = game.screenshots.map(s => `
+    <div class="screenshot-thumb-card" data-src="${s.src}" data-label="${s.label}">
+      <img src="${s.src}" alt="${s.label}" class="screenshot-thumb-img" loading="lazy" />
+      <span class="screenshot-badge">${s.label}</span>
     </div>
-    <a class="btn" style="--c:#ffa62b" href="https://kekoyana.github.io/ai_game/shiritori/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
+  `).join('');
 
-  <div class="card">
-    <span class="icon" style="--d:1.8s">🔮</span>
-    <div class="info">
-      <h2>MYSTICAL DEFENSE</h2>
-      <p class="desc">神秘的な魔法で拠点を守り抜け！戦略的な防衛ゲーム。</p>
-      <span class="model">Claude Opus 4.6</span>
-      <div class="rating">★★★<span class="empty">☆☆</span></div>
+  // Attach Lightbox Triggers
+  document.querySelectorAll('.screenshot-thumb-card').forEach(card => {
+    card.addEventListener('click', () => {
+      openLightbox(card.dataset.src, card.dataset.label);
+    });
+  });
+
+  // Update Sidebar & Shelf Active States
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.id === gameId);
+  });
+
+  document.querySelectorAll('.shelf-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.id === gameId);
+  });
+}
+
+function renderSidebar() {
+  const filtered = GAMES.filter(game => {
+    if (currentCategory !== "all" && game.category !== currentCategory) {
+      return false;
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchTitle = game.title.toLowerCase().includes(q);
+      const matchTags = game.tags.some(t => t.toLowerCase().includes(q));
+      if (!matchTitle && !matchTags) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    sidebarGamelist.innerHTML = `
+      <div style="padding: 20px 14px; color: var(--steam-text-dark); font-size: 12px; text-align: center;">
+        該当なし
+      </div>
+    `;
+    return;
+  }
+
+  sidebarGamelist.innerHTML = filtered.map(game => `
+    <div 
+      class="sidebar-item ${game.id === selectedGameId ? 'active' : ''}" 
+      data-id="${game.id}"
+    >
+      <span class="sidebar-item-icon">${game.icon}</span>
+      <div class="sidebar-item-info">
+        <span class="sidebar-item-name">${game.title}</span>
+        <span class="sidebar-item-cat">${game.categoryLabel}</span>
+      </div>
     </div>
-    <a class="btn" style="--c:#6b21a8" href="https://kekoyana.github.io/mystical/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
+  `).join('');
 
-  <div class="card">
-    <span class="icon" style="--d:2.1s">✨</span>
-    <div class="info">
-      <h2>Plus Fantasy</h2>
-      <p class="desc">放置するだけで冒険が進むファンタジー放置ゲーム。気軽に楽しもう！</p>
-      <span class="model">GPT-5</span>
-      <div class="rating">★★★★<span class="empty">☆</span></div>
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      selectGame(item.dataset.id);
+    });
+  });
+}
+
+function renderShelf() {
+  shelfGrid.innerHTML = GAMES.map(game => `
+    <div class="shelf-card ${game.id === selectedGameId ? 'active' : ''}" data-id="${game.id}">
+      <div class="shelf-media">
+        <img src="${game.coverImg}" alt="${game.title}" class="shelf-img" loading="lazy" />
+      </div>
+      <div class="shelf-body">
+        <div class="shelf-title">${game.title}</div>
+        <div class="shelf-category">${game.categoryLabel} ・ ${game.playtime}</div>
+      </div>
     </div>
-    <a class="btn" style="--c:#2563eb" href="https://kekoyana.github.io/plusfantasy/" target="_blank" rel="noopener">遊ぶ</a>
-  </div>
+  `).join('');
 
-</main>
+  document.querySelectorAll('.shelf-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectGame(card.dataset.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
 
-<footer>&copy; 2026 kekoyana</footer>
+// --- LIGHTBOX FUNCTIONS ---
+function openLightbox(src, label) {
+  lightboxImg.src = src;
+  lightboxCaption.textContent = label;
+  lightboxModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightboxModal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+lightboxCloseBtn.addEventListener('click', closeLightbox);
+lightboxModal.addEventListener('click', (e) => {
+  if (e.target === lightboxModal) closeLightbox();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
+    closeLightbox();
+  }
+});
+
+// --- EVENT LISTENERS ---
+categoryPills.addEventListener('click', (e) => {
+  const pill = e.target.closest('.cat-pill');
+  if (!pill) return;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  currentCategory = pill.dataset.cat;
+  renderSidebar();
+});
+
+searchInput.addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  renderSidebar();
+});
+
+document.getElementById('brandReset').addEventListener('click', (e) => {
+  e.preventDefault();
+  currentCategory = "all";
+  searchQuery = "";
+  searchInput.value = "";
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === 'all'));
+  renderSidebar();
+  selectGame(GAMES[0].id);
+});
+
+// --- INITIALIZE ---
+renderSidebar();
+renderShelf();
+selectGame(GAMES[0].id);
+</script>
 
 </body>
 </html>
