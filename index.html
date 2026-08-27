@@ -1269,6 +1269,20 @@ document.getElementById('brandReset').addEventListener('click', (e) => {
   selectGame(GAMES[0].id);
 });
 
+// --- GA4 EVENT TRACKING ---
+heroPlayBtn.addEventListener('click', () => {
+  const game = GAMES.find(g => g.id === selectedGameId);
+  if (!game) return;
+  if (typeof gtag === 'function') {
+    gtag('event', 'play_game', {
+      game_id: game.id,
+      game_title: game.title,
+      game_category: game.category,
+      game_url: game.url
+    });
+  }
+});
+
 // --- INITIALIZE ---
 renderSidebar();
 renderShelf();
