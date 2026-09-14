@@ -91,7 +91,9 @@ body {
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .topbar-brand {
@@ -99,10 +101,13 @@ body {
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .topbar-logo {
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .topbar-title {
@@ -112,11 +117,14 @@ body {
   font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .topbar-nav {
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-tab-item {
@@ -127,12 +135,14 @@ body {
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.08);
   border: none;
+  white-space: nowrap;
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .library-count-badge {
@@ -143,6 +153,7 @@ body {
   border-radius: 12px;
   font-weight: 700;
   border: 1px solid rgba(102, 192, 244, 0.25);
+  white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -168,6 +179,7 @@ body {
 .sidebar-search-box {
   padding: 12px;
   border-bottom: 1px solid var(--steam-border);
+  flex-shrink: 0;
 }
 
 .sidebar-search-input {
@@ -203,24 +215,31 @@ body {
 
 .sidebar-category-filter {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--steam-border);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  flex-shrink: 0;
 }
 .sidebar-category-filter::-webkit-scrollbar { display: none; }
 
 .cat-pill {
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 10px;
+  padding: 4px 10px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--steam-text-dim);
   border: none;
   cursor: pointer;
   white-space: nowrap;
   font-weight: 500;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
   transition: all 0.15s;
 }
 
@@ -237,7 +256,9 @@ body {
 
 .sidebar-gamelist {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 6px 0;
 }
 
@@ -700,26 +721,78 @@ body {
    RESPONSIVE DESIGN
    ========================================================================== */
 @media (max-width: 800px) {
+  .client-topbar {
+    padding: 0 12px;
+    height: 48px;
+  }
+  .topbar-left {
+    gap: 10px;
+  }
+  .topbar-brand {
+    gap: 6px;
+  }
+  .topbar-title {
+    font-size: 15px;
+  }
+  .nav-tab-item {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .library-count-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
   .library-layout {
     flex-direction: column;
   }
   .library-sidebar {
     width: 100%;
-    max-height: 240px;
+    max-height: 250px;
     border-right: none;
     border-bottom: 1px solid var(--steam-border);
   }
+  .sidebar-search-box {
+    padding: 8px 12px;
+  }
+  .sidebar-category-filter {
+    padding: 6px 12px;
+    min-height: 38px;
+  }
+  .hero-banner {
+    min-height: 360px;
+  }
   .hero-banner-content {
-    padding: 20px;
+    padding: 20px 16px;
   }
   .hero-title {
     font-size: 24px;
   }
   .library-content-body {
-    padding: 20px;
+    padding: 20px 16px;
+    gap: 24px;
   }
   .screenshots-gallery-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .client-topbar {
+    padding: 0 8px;
+  }
+  .topbar-left {
+    gap: 8px;
+  }
+  .topbar-title {
+    font-size: 13px;
+  }
+  .nav-tab-item {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+  .library-count-badge {
+    font-size: 10px;
+    padding: 2px 6px;
   }
 }
 </style>
