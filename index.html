@@ -813,7 +813,7 @@ body {
   </div>
 
   <div class="topbar-right">
-    <span class="library-count-badge">8 本のゲーム</span>
+    <span class="library-count-badge">12 本のゲーム</span>
   </div>
 </header>
 
@@ -837,9 +837,10 @@ body {
 
     <!-- Category Pills -->
     <div class="sidebar-category-filter" id="categoryPills">
-      <button class="cat-pill active" data-cat="all">すべて (8)</button>
+      <button class="cat-pill active" data-cat="all">すべて (12)</button>
       <button class="cat-pill" data-cat="strategy">戦略・カード (4)</button>
-      <button class="cat-pill" data-cat="action">3D脱出 (1)</button>
+      <button class="cat-pill" data-cat="action">アクション (3)</button>
+      <button class="cat-pill" data-cat="puzzle">パズル (2)</button>
       <button class="cat-pill" data-cat="simulation">シム (2)</button>
       <button class="cat-pill" data-cat="quiz">クイズ (1)</button>
     </div>
@@ -918,7 +919,7 @@ body {
 
       <!-- All Games Collection Shelf -->
       <div>
-        <div class="detail-section-title">すべてのコレクション (8)</div>
+        <div class="detail-section-title">すべてのコレクション (12)</div>
         <div class="shelf-grid" id="shelfGrid">
           <!-- Shelf Cards injected -->
         </div>
@@ -1048,8 +1049,8 @@ const GAMES = [
     tags: ["ジン・ラミー", "トランプ", "中世王宮", "頭脳戦"],
     playtime: "10〜15分",
     platform: "ブラウザ（PC / スマホ）",
-    url: "https://kekoyana.github.io/output_games/royal-rummy/",
-    coverImg: "https://kekoyana.github.io/output_games/royal-rummy/ogp.jpg", // OGP優先
+    url: "games/royal-rummy/",
+    coverImg: "games/royal-rummy/ogp.jpg",
     screenshots: [
       { src: "screenshots/royal-rummy.png", label: "タイトル画面" },
       { src: "screenshots/royal-rummy-play.png", label: "ゲームプレイ（カード対戦テーブル・手札・アタック）" }
@@ -1071,7 +1072,7 @@ const GAMES = [
     tags: ["4X戦略", "文明発展", "超高速", "ターン制"],
     playtime: "10分",
     platform: "ブラウザ（PC / スマホ）",
-    url: "https://kekoyana.github.io/output_games/civrush/",
+    url: "games/civrush/",
     coverImg: "screenshots/civrush.png", // OGPなしのためキャプチャ
     screenshots: [
       { src: "screenshots/civrush.png", label: "難易度選択・パノラマ画面" },
@@ -1085,6 +1086,70 @@ const GAMES = [
       "手軽ながら奥深い選択肢とリソースマネジメント",
       "いつでもサクッと遊べるハイテンポな4X"
     ]
+  },
+  {
+    id: "bounce-breaker",
+    title: "バウンスブレイカー",
+    category: "puzzle",
+    categoryLabel: "パズル",
+    tags: ["ブロック崩し", "物理パズル", "ターン制"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "games/bounce-breaker/",
+    coverImg: "screenshots/bounce-breaker.svg",
+    screenshots: [{ src: "screenshots/bounce-breaker.svg", label: "バウンスブレイカー" }],
+    icon: "🧱",
+    summary: "角度を狙ってボールを放ち、迫るブロックの壁を一掃するターン制パズル。",
+    desc: "毎ターン迫り来るブロックを、ボールの反射を読んで破壊するフィジクスパズル。",
+    features: ["狙いを定めるターン制の操作", "ボールの反射を使った連続破壊"]
+  },
+  {
+    id: "hex-tower",
+    title: "HEX TOWER",
+    category: "action",
+    categoryLabel: "アクション",
+    tags: ["タイミング", "積み上げ", "スコアアタック"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "games/hex-tower/",
+    coverImg: "screenshots/hex-tower.svg",
+    screenshots: [{ src: "screenshots/hex-tower.svg", label: "HEX TOWER" }],
+    icon: "🏗️",
+    summary: "揺れる六角ブロックを落とし、宇宙に伸びる塔を積み上げよう。",
+    desc: "落とすタイミングを見極めてブロックを積み上げるアクションゲーム。PERFECTを連続させて高得点を狙おう。",
+    features: ["タイミングで決まる積み上げ", "PERFECTコンボでスコアアップ"]
+  },
+  {
+    id: "hyper-dash",
+    title: "HYPER DASH!!",
+    category: "action",
+    categoryLabel: "アクション",
+    tags: ["ランナー", "3レーン", "サイバーパンク"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "games/hyper-dash/",
+    coverImg: "screenshots/hyper-dash.svg",
+    screenshots: [{ src: "screenshots/hyper-dash.svg", label: "HYPER DASH!!" }],
+    icon: "🏃",
+    summary: "3レーンを疾走し、障害物を避けながらハイスコアを目指す無限ランナー。",
+    desc: "サイバーパンクなコースでコインを集め、シールドやマグネットを使って走り続けよう。",
+    features: ["3レーンのシンプルな操作", "アイテムを使ったスコアアタック"]
+  },
+  {
+    id: "merge-drop",
+    title: "Merge Drop",
+    category: "puzzle",
+    categoryLabel: "パズル",
+    tags: ["マージ", "落下", "数字パズル"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "games/merge-drop/",
+    coverImg: "screenshots/merge-drop.svg",
+    screenshots: [{ src: "screenshots/merge-drop.svg", label: "Merge Drop" }],
+    icon: "🔢",
+    summary: "数字ボールを落として合体させ、連鎖コンボで高得点を狙うパズル。",
+    desc: "同じ数字のボールを合体させて大きく育てるフィジクスマージパズル。",
+    features: ["数字ボールを合体させる直感的なルール", "連鎖コンボで大量得点"]
   },
   {
     id: "evolife",
