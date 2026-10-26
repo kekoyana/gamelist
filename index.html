@@ -837,11 +837,12 @@ body {
 
     <!-- Category Pills -->
     <div class="sidebar-category-filter" id="categoryPills">
-      <button class="cat-pill active" data-cat="all">すべて (8)</button>
+      <button class="cat-pill active" data-cat="all">すべて (9)</button>
       <button class="cat-pill" data-cat="strategy">戦略・カード (4)</button>
       <button class="cat-pill" data-cat="action">3D脱出 (1)</button>
       <button class="cat-pill" data-cat="simulation">シム (2)</button>
       <button class="cat-pill" data-cat="quiz">クイズ (1)</button>
+      <button class="cat-pill" data-cat="seek">探しもの (1)</button>
     </div>
 
     <!-- Game List Items -->
@@ -1130,6 +1131,29 @@ const GAMES = [
       "手応え抜群の本格クイズ問題",
       "回答速度がスコアに直結する早押しスリル",
       "ハイスコアを目指して何度でも挑戦可能"
+    ]
+  },
+  {
+    id: "find-ponta",
+    title: "Find Ponta! - ポンタをさがせ",
+    category: "seek",
+    categoryLabel: "探しもの",
+    tags: ["隠れキャラ探し", "ズーム操作", "ステージクリア", "日英対応"],
+    playtime: "5〜10分",
+    platform: "ブラウザ（PC / スマホ）",
+    url: "games/find-ponta/",
+    coverImg: "screenshots/find-ponta.png", // OGPなしのためキャプチャ
+    screenshots: [
+      { src: "screenshots/find-ponta.png", label: "タイトル画面" },
+      { src: "screenshots/find-ponta-play.png", label: "ゲームプレイ（手配書の特徴を頼りに公園でポンタを探す）" }
+    ],
+    icon: "🦝",
+    summary: "迷子のたぬき「ポンタ」を、にぎやかな街の中から探し出す隠れキャラ探しゲーム。",
+    desc: "公園・市場・お祭りなど、キャラクターでごった返す街のどこかに迷子のたぬき「ポンタ」が紛れ込んでいます。手配書の特徴を頼りにズームやドラッグで画面を探索し、制限時間内にポンタを見つけ出そう！",
+    features: [
+      "手配書の特徴を手がかりに、そっくりなデコイから本物を見抜く",
+      "ピンチ・ホイールでズームし、ドラッグで街中を探索",
+      "ヒントやボーナスアイテム、ハードモードで繰り返し挑戦"
     ]
   }
 ];
